@@ -1,0 +1,57 @@
+# The "known positions" the orchestrator receives via workspace().
+# Units: millimetres. Origin: centre of hole (row 1, col a). x along rows, y across columns.
+board:
+  type: breadboard_830
+  rows: 63
+  pitch_mm: 2.54
+  columns:              # y offset in pitches from column a
+    a: 0
+    b: 1
+    c: 2
+    d: 3
+    e: 4
+    f: 7                # 3-pitch centre gap between e and f
+    g: 8
+    h: 9
+    i: 10
+    j: 11
+  rails:                # y offset in pitches; each rail has a hole every pitch (rows 1..63, some boards skip every 6th)
+    RAIL_T_NEG: -3
+    RAIL_T_POS: -2
+    RAIL_B_POS: 13
+    RAIL_B_NEG: 14
+  placement_tolerance_mm: 0.5
+
+harness:                # pre-wired Pi <-> board connections (never moved by the arm)
+  3V3: RAIL_T_POS
+  GND: [RAIL_T_NEG, RAIL_B_NEG]
+  GPIO17: R5L
+  GPIO27: R10L
+  GPIO22: R15L
+  GPIO23: R20L
+gpio_model:
+  high_v: 3.3
+  series_ohm: 40
+  input_threshold_v: 1.8
+
+tray:                   # slots along a line at y = 60 mm, one cartridge each
+  y_mm: 60.0
+  slots:
+    - {id: 1, x_mm: 10.0,  cartridge: resistor_330}
+    - {id: 2, x_mm: 25.0,  cartridge: resistor_330}
+    - {id: 3, x_mm: 40.0,  cartridge: resistor_1k}
+    - {id: 4, x_mm: 55.0,  cartridge: led_red}
+    - {id: 5, x_mm: 70.0,  cartridge: led_red}
+    - {id: 6, x_mm: 85.0,  cartridge: jumper_2}
+    - {id: 7, x_mm: 100.0, cartridge: jumper_4}
+    - {id: 8, x_mm: 115.0, cartridge: jumper_rail}
+
+cartridges:             # pin offsets in (row, col) hole units from pin 0; spice element between pin nets
+  resistor_330: {pins: [[0, 0], [4, 0]], spice: "R{id} {n0} {n1} 330"}
+  resistor_1k:  {pins: [[0, 0], [4, 0]], spice: "R{id} {n0} {n1} 1k"}
+  led_red:      {pins: [[0, 0], [1, 0]], spice: "D{id} {n0} {n1} LED_RED", pin_names: [anode, cathode]}
+  jumper_2:     {pins: [[0, 0], [2, 0]], spice: "R{id} {n0} {n1} 0.01"}
+  jumper_4:     {pins: [[0, 0], [4, 0]], spice: "R{id} {n0} {n1} 0.01"}
+  jumper_rail:  {pins: [[0, 0], [0, -6]], spice: "R{id} {n0} {n1} 0.01"}   # from column a to RAIL_T_NEG... resolved by world
+spice_models:
+  - ".model LED_RED D(IS=1e-18 N=1.8 RS=1 BV=5 CJO=10p)"
