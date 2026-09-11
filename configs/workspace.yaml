@@ -52,6 +52,6 @@ cartridges:             # pin offsets in (row, col) hole units from pin 0; spice
   led_red:      {pins: [[0, 0], [1, 0]], spice: "D{id} {n0} {n1} LED_RED", pin_names: [anode, cathode]}
   jumper_2:     {pins: [[0, 0], [2, 0]], spice: "R{id} {n0} {n1} 0.01"}
   jumper_4:     {pins: [[0, 0], [4, 0]], spice: "R{id} {n0} {n1} 0.01"}
-  jumper_rail:  {pins: [[0, 0], [0, -6]], spice: "R{id} {n0} {n1} 0.01"}   # from column a to RAIL_T_NEG... resolved by world
+  jumper_rail:  {pins: [[0, 0], [0, -3]], spice: "R{id} {n0} {n1} 0.01"}   # column a -> RAIL_T_NEG (y offset -3 pitches)
 spice_models:
   - ".model LED_RED D(IS=1e-18 N=1.8 RS=1 BV=5 CJO=10p)"
