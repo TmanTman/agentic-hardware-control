@@ -84,4 +84,4 @@ hardware milestones only need adapters, never a rewrite.
 
 | version | date | recording | notes |
 |---|---|---|---|
-| | | | |
+| v0.1.0 | 2026-09-12 | `recordings/v0.1.0/led-from-gpio17.gif` | ngspice 47 reference; python fallback agrees to 0.05 % |
